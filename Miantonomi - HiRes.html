@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Miantonomi Trails</title>
+    
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="pace.css">
+    <script src="pace.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="./Qgis2threejs.css">
+    <link rel="stylesheet" href="./jquery/jquery-ui.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Lato');
+
+    </style>
+    <script src="./jquery/jquery-3.1.1.min.js"></script>
+    <script src="jquery/jquery-ui.min.js"></script>
+    <script src="./Lightbox.js"></script>
+</head>
+
+<body>
+    <ul id="menu" class="noclick nojs" style="visibility:hidden; position:absolute;">
+        <div id=menuhead>Layers</div>
+        <li>
+
+            <div>Terrain Layers</div>
+            <ul class="noclick nojs" id="SPIPV">
+                <li>
+                    <div class="activeSet" onclick="toggleSet(set1, 'Ortho', false);">Orthographic Imagery</div>
+                </li>
+                <li>
+                    <div class="inactiveSet" onclick="toggleSet(set1, 'Slope', false);">Slope Angle</div>
+                </li>
+                <li>
+                    <div class="inactiveSet" onclick="toggleSet(set1, 'Elevation', false);">Elevation</div>
+                </li>
+
+            </ul>
+
+        </li>
+        <li>
+            <div>Structural Layers</div>
+            <ul class="noclick nojs">
+                <li>
+                    <div class="active" onclick="toggleLayer('Trails');">Trails</div>
+                </li>
+                <li>
+                    <div class="active" onclick="toggleLayer('Roads');">Roads</div>
+                </li>
+                <li>
+                    <div class="active" onclick="toggleLayer('Buildings');" onclick="toggleLayer('Tower');">Buildings</div>
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+    <div id="collapse">
+        <div id="midCollapse">
+            <div id="popupIcon" style="visibility:hidden;">
+                <img src="assets//information-circular-button.png">
+            </div>
+            <div id="legendIcon" style="visibility:hidden;">
+                <img src="assets/list.png">
+            </div>
+            <div id="labelIcon" style="visibility:hidden;">
+                <img src="assets/price-tag.png">
+            </div>
+        </div>
+    </div>
+    <div id="webgl">
+        <div id="loading-data" class="loading-data">
+            <div class="container">
+                <div class="canvas canvas1">
+                    <div class="spinner1 spinnerMax">
+                        <div class="spinner1 spinnerMid">
+                            <div class="spinner1 spinnerMin"></div>
+                        </div>
+                    </div>
+                    <div id="loading">
+                        <p>Loading...</p>
+                    </div>
+                </div>
+            </div>
+            <div id="logo">
+
+            </div>
+        </div>
+    </div>
+    <!-- popup -->
+    <div id="popup" style="display:none;">
+        <div id="closebtn">&times;</div>
+        <div id="popupbar"></div>
+        <div id="popupbody">
+            <div id="popupcontent"></div>
+            <div id="pageinfo">
+                <h1>Current View URL</h1>
+                <div>
+                    <input id="urlbox" type="text"> </div>
+                <h1>Usage</h1>
+                <div id="usage"></div>
+                <h1>About</h1>
+
+            </div>
+        </div>
+    </div>
+    <!-- legend -->
+    <div id="legend" style="visibility:hidden;">
+        <div id="legclosebtn">&times;</div>
+        <div id="legendbar"></div>
+        <div id="legendbody">
+            <ul>
+                <li id="tab-0"><a href="#tabs-0">Bathymetry</a></li>
+                <li id="tab-1"><a href="#tabs-1">Symbology</a></li>
+            </ul>
+            <div id="tabs-0">
+            </div>
+
+            <div id="tabs-1">
+                <div id="legendwrapper">
+                    <!-- SPIPV Survey Layers -->
+
+                    <hr>
+                    <!-- Planning Layers -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="header">
+        <p></p>
+    </div>
+    <div id="logo">
+    </div>
+    <!-- footer -->
+    <div id="footer">
+        <p>Miantonomi Park Trails
+            <br> Coordinate System: NAD 1983 UTM Zone 19N (meters) | Elevation: RIGIS | Vertical Exaggeration: 1.5x | Date: 04/09/2018</p>
+    </div>
+    <script src="./threejs/three.min.js"></script>
+    <script src="./Qgis2threejs.js"></script>
+    <script src="./threejs/OrbitControls.js"></script>
+    <script src="./tweenjs/Tween.js"></script>
+    <script>
+        var option = Q3D.Options;
+
+    </script>
+    <script src="./proj4js/proj4.js"></script>
+    <script src="./threejs/loaders/ColladaLoader.js"></script>
+    <script src="./Model.js"></script>
+    <!-- replace built-in triangulation with Earcut -->
+    <script src="threejs/earcut.js"></script>
+    <div id="inset"></div>
+    <script>
+        //if (typeof proj4 !== "undefined") document.getElementById("lib_proj4js").style.display = "list-item";
+        var container = document.getElementById("webgl");
+        // initialize application
+        var app = Q3D.application;
+        app.init(container);
+        // load the project
+        app.loadProject(project);
+        app.addEventListeners();
+        app.buildCompass();
+        app.start();
+        app.setLabelVisibility(!app.labelVisibility);
+
+    </script>
+    <!-- <script src="./dat-gui/dat.gui.min.js"></script>
+    <script src="./dat-gui_panel.js"></script> -->
+    <script src="./Tour.js"></script>
+    <script src="./GUI.js"></script>
+    <script src="./Layers.js"></script>
+    <script>
+        // initialize dat-gui panel
+        // Q3D.gui.init();
+        advanceTour(0);
+
+    </script>
+    <div class="container">
+        <div class="backDrop"></div>
+        <div id="box" class="box">
+            <div class="close">&times;</div> <img class="largeImage" src="" /> </div>
+        <div class="clear"></div>
+    </div>
+</body>
+
+</html>
